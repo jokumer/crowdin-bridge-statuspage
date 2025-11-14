@@ -47,6 +47,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                 sortable: true,
                 width: 260,
             },
+            {
+                headerName: '',
+                cellRenderer: renderCellExtensionState,
+                field: 'usable',
+                pinned: 'left',
+                sortable: true,
+                width: 20,
+            },
             ...columnDefsLanguages
         ];
 
@@ -91,23 +99,26 @@ async function fetchJsonData(sourceJson) {
 
 // Render extension with link to crowdin project & source (currently TER only)
 function renderCellExtension(params) {
-    let link_crowdin;
-    // Crowdin may be not "usable"
-    if (params.data.usable) {
-        link_crowdin = `<a href="${sourceCrowdin}${params.data.crowdinKey}" target="_blank" title="Crowdin">${params.data.extensionKey}</a>`;
-    } else {
-        link_crowdin = `<a href="${sourceCrowdin}${params.data.crowdinKey}" target="_blank" title="Crowdin"><del>${params.data.extensionKey}</del></a>`;
-    }
-
+    const link_crowdin = `<a href="${sourceCrowdin}${params.data.crowdinKey}" target="_blank" title="Crowdin">${params.data.extensionKey}</a>`;
+    // Source link only for TER extensions
     let link_src;
-    // TER only for extensions
     if ( params.data.extensionKey != 'typo3-cms') {
         link_src = `<a href="${sourceTYPO3ExtensionRepository}${params.data.extensionKey}" target="_blank" title="TYPO3 extension repository">ter</a>`;
-    } else {
-        link_src = null;
     }
-
     return `${(link_crowdin) + (link_src ? ' | ' + link_src : '')}`;
+}
+
+/**
+ * Render extension state with information about
+ * - usable or not (unfinished)
+ * - ...
+ */
+function renderCellExtensionState(params) {
+    if (params.data.usable) {
+        return '';
+    } else {
+        return '<span class="t3-admonition t3-admonition-warning" role="alert" title="Unfinished projects"></span>';
+    }
 }
 
 // Render crowdin project language link

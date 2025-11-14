@@ -72,3 +72,16 @@ body {
 .cell-link-text-decoration a {
     text-decoration: none;
 }
+
+.t3-admonition {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    line-height: 1;
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+}
+.t3-admonition-warning:before {content: "\f071";}
