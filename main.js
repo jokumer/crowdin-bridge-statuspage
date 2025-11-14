@@ -20,10 +20,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             for (const [key, value] of Object.entries(jsonData.languages)) {
                 columnDefsLanguages.push({
                     cellClassRules: {
-                        'cell-link-text-decoration': 'x >= 0',
-                        'cell-bg-green': 'x >= 80',
-                        'cell-bg-blue': 'x >= 50 && x < 80',
-                        'cell-bg-red': 'x < 50',
+                        't3-cell-color-green': 'x >= 80',
+                        't3-cell-color-blue': 'x >= 50 && x < 80',
+                        't3-cell-color-red': 'x < 50',
+                        't3-cell-unit-percent': 'x >= 0',
                     },
                     cellRenderer: renderCellCrowdinProjectLanguage,
                     filter: false,
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     headerTooltip: key,
                     sortable: true,
                     valueGetter: `data.languages['${key}']`,
-                    languageKey: key,
+                    t3LanguageKey: key,
                 });
             }
         }
@@ -53,8 +53,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         const defaultColDef = {
             filter: false,
             flex: 1,
-            initialWidth: 50,
-            minWidth: 50,
+            initialWidth: 70,
+            minWidth: 70,
             sortable: false,
         };
 
@@ -113,8 +113,8 @@ function renderCellExtension(params) {
 // Render crowdin project language link
 function renderCellCrowdinProjectLanguage(params) {
     if (params.data.usable && typeof params.value === "number") {
-        return `<a href="${sourceCrowdin}${params.data.crowdinKey}/${params.colDef.languageKey}" target="_blank"><span class="cell-element">${params.value}</span></a>`;
+        return `<a href="${sourceCrowdin}${params.data.crowdinKey}/${params.colDef.t3LanguageKey}" target="_blank"><span class="t3-cell-element">${params.value}</span></a>`;
     } else {
-        return `<span class="cell-element">${params.value}</span>`;
+        return `<span class="t3-cell-element">${params.value}</span>`;
     }
 }
