@@ -53,6 +53,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 field: 'usable',
                 pinned: 'left',
                 sortable: true,
+                tooltipValueGetter: renderTooltipExtensionState,
                 width: 20,
             },
             ...columnDefsLanguages
@@ -71,6 +72,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             defaultColDef: defaultColDef,
             headerHeight: 110,
             theme: agGrid.themeMaterial,
+            tooltipShowDelay: 500,
+            tooltipHideDelay: 5000,
         };
 
         const gridDiv = document.querySelector('#ag-grid');
@@ -109,15 +112,27 @@ function renderCellExtension(params) {
 }
 
 /**
- * Render extension state with information about
+ * Render admonition for extension state with information about
  * - usable or not (unfinished)
  * - ...
  */
 function renderCellExtensionState(params) {
-    if (params.data.usable) {
+    if (params.value) {
         return '';
     } else {
-        return '<span class="t3-admonition t3-admonition-warning" role="alert" title="Unfinished projects"></span>';
+        return '<span class="t3-admonition t3-admonition-warning" role="alert"></span>';
+    }
+}
+/**
+ * Render tooltip for extension state with information about
+ * - usable or not (unfinished)
+ * - ...
+ */
+function renderTooltipExtensionState(params) {
+    if (params.value) {
+        return '';
+    } else {
+        return 'Unfinished project';
     }
 }
 
