@@ -1,7 +1,11 @@
 /*!
  * Data grid for status page at https://localize.typo3.org/
- * AG Grid community v34.3.1
  */
+/*!
+ * AG Grid community v34.3.1 by AG Grid Ltd. - https://www.ag-grid.com
+ * License - https://www.ag-grid.com/eula/AG-Grid-Community-License.html (MIT License)
+ */
+
 // Config - source
 const sourceCrowdin = 'https://crowdin.com/project/';
 const sourceTYPO3ExtensionRepository = 'https://extensions.typo3.org/extension/';
