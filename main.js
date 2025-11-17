@@ -112,9 +112,12 @@ function renderCellExtension(params) {
 
 // Render crowdin project language link
 function renderCellCrowdinProjectLanguage(params) {
+    const dataApprovals = params.data.approvals[params.colDef.languageKey];
+    const dataTranslations = params.data.translations[params.colDef.languageKey];
+    const resultInfo = `${dataApprovals} / ${dataTranslations}`
     if (params.data.usable && typeof params.value === "number") {
-        return `<a href="${sourceCrowdin}${params.data.crowdinKey}/${params.colDef.languageKey}" target="_blank"><span class="cell-element">${params.value}</span></a>`;
+        return `<a href="${sourceCrowdin}${params.data.crowdinKey}/${params.colDef.languageKey}" target="_blank"><span class="cell-element">${resultInfo}</span></a>`;
     } else {
-        return `<span class="cell-element">${params.value}</span>`;
+        return `<span class="cell-element">${resultInfo}</span>`;
     }
 }
