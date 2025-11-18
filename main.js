@@ -22,7 +22,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                     cellClassRules: {
                         'cell-link-text-decoration': 'x >= 0',
                         'cell-bg-green': 'x >= 80',
-                        'cell-bg-blue': 'x >= 50 && x < 80',
+                        'cell-bg-yellow': 'x >= 50 && x < 80',
+                        //'cell-bg-orange': 'x >= 20 && x < 50',
                         'cell-bg-red': 'x < 50',
                     },
                     cellRenderer: renderCellCrowdinProjectLanguage,

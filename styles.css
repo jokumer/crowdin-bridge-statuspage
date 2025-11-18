@@ -9,7 +9,9 @@ body {
     margin: 0;
     --ag-font-size: 16px;
 }
-
+.ag-cell {
+    text-align: center;
+}
 :where(.ag-ltr) .ag-cell:not(.ag-cell-inline-editing) {
     padding-left: calc(var(--ag-cell-horizontal-padding) /2 - 1px + var(--ag-row-group-indent-size)*var(--ag-indentation-level));
     padding-right: calc(var(--ag-cell-horizontal-padding) /2 - 1px);
@@ -19,6 +21,9 @@ body {
 }
 .ag-header-cell-label {
     height: 100%;
+}
+.ag-header-viewport .ag-header-cell-label {
+    transform: rotate(180deg);
 }
 .ag-header-cell-label, .ag-header-group-cell-label {
     align-items: baseline;
@@ -60,14 +65,17 @@ body {
     padding: 2px;
     font-size: calc(var(--ag-font-size) * 0.75);
 }
-.cell-bg-red .cell-element {
+.cell-bg-red {
     background-color: #cc222244;
 }
-.cell-bg-green .cell-element {
-    background-color: #33cc3344;
+.cell-bg-orange {
+    background-color: #cc772244;
 }
-.cell-bg-blue .cell-element {
-    background-color: #2244cc44;
+.cell-bg-yellow {
+    background-color: #cccc2244;
+}
+.cell-bg-green {
+    background-color: #33cc3344;
 }
 .cell-link-text-decoration a {
     text-decoration: none;
