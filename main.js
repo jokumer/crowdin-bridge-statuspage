@@ -23,12 +23,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (jsonData.languages) {
             for (const [key, value] of Object.entries(jsonData.languages)) {
                 columnDefsLanguages.push({
-                    cellClassRules: {
-                        't3-cell-color-green': 'x >= 80',
-                        't3-cell-color-blue': 'x >= 50 && x < 80',
-                        't3-cell-color-red': 'x < 50',
-                        't3-cell-unit-percent': 'x >= 0',
-                    },
                     cellRenderer: renderCellCrowdinProjectLanguage,
                     filter: false,
                     headerClass: 'ag-header-cell-custom-languagestyle',
@@ -144,10 +138,26 @@ function renderTooltipExtensionState(params) {
 function renderCellCrowdinProjectLanguage(params) {
     const dataApprovals = params.data.approvals[params.colDef.t3LanguageKey];
     const dataTranslations = params.data.translations[params.colDef.t3LanguageKey];
+    let resultStyleAdditionalClasses = 't3-cell-element';
+    if (params.data.usable && params.value >= 80) {
+        resultStyleAdditionalClasses += ' t3-cell-element-success';
+    }
+    if (params.data.usable && params.value >= 50 && params.value < 80) {
+        resultStyleAdditionalClasses += ' t3-cell-element-warning';
+    }
+    if (params.data.usable && params.value < 50) {
+        resultStyleAdditionalClasses += ' t3-cell-element-danger';
+    }
+    if (params.data.usable && typeof params.value === "number") {
+        resultStyleAdditionalClasses += ' t3-cell-element-unit-percent';
+    }
+    if (params.data.usable && (dataApprovals != dataTranslations)) {
+        resultStyleAdditionalClasses += ' t3-cell-element-lang-approval-missing';
+    }
     const resultInfo = `${dataApprovals} / ${dataTranslations}`
     if (params.data.usable && typeof params.value === "number") {
-        return `<a href="${sourceCrowdin}${params.data.crowdinKey}/${params.colDef.t3LanguageKey}" target="_blank"><span class="t3-cell-element">${resultInfo}</span></a>`;
+        return `<a href="${sourceCrowdin}${params.data.crowdinKey}/${params.colDef.t3LanguageKey}" target="_blank"><span class="${resultStyleAdditionalClasses}">${resultInfo}</span></a>`;
     } else {
-        return `<span class="t3-cell-element">-</span>`;
+        return `<span class="${resultStyleAdditionalClasses}">-</span>`;
     }
 }
