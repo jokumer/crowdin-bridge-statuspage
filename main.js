@@ -117,7 +117,7 @@ function renderCellExtension(params) {
 
 /**
  * Render admonition for extension state with information about
- * - usable or not (unfinished)
+ * - usable or not (No approvals available)
  * - ...
  */
 function renderCellExtensionState(params) {
@@ -129,14 +129,14 @@ function renderCellExtensionState(params) {
 }
 /**
  * Render tooltip for extension state with information about
- * - usable or not (unfinished)
+ * - usable or not (No approvals available)
  * - ...
  */
 function renderTooltipExtensionState(params) {
     if (params.value) {
         return '';
     } else {
-        return 'Unfinished project';
+        return 'No approvals available';
     }
 }
 
