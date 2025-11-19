@@ -36,9 +36,7 @@ body {
     padding-left: calc(var(--ag-cell-horizontal-padding) / 2 - 1px + var(--ag-row-group-indent-size) * var(--ag-indentation-level));
     padding-right: calc(var(--ag-cell-horizontal-padding) / 2 - 1px);
 }
-<<<<<<< HEAD
 
-=======
 .ag-cell a {
     text-decoration: none;
     :hover {
@@ -48,7 +46,7 @@ body {
 .ag-cell a:hover {
     text-decoration: underline;
 }
->>>>>>> c0a03b64ed15b467c71cc7cc272c6ce04cf89813
+
 .ag-header-cell, .ag-header-group-cell {
     padding: 0 calc(var(--ag-cell-horizontal-padding) / 2);
 }
@@ -119,23 +117,6 @@ body {
     font-size: calc(var(--ag-font-size) *0.75);
     padding: 2px;
 }
-<<<<<<< HEAD
-
-.cell-bg-red {
-    background-color: #cc222244;
-}
-
-.cell-bg-orange {
-    background-color: #cc772244;
-}
-
-.cell-bg-yellow {
-    background-color: #cccc2244;
-}
-
-.cell-bg-green {
-    background-color: #33cc3344;
-}
 
 [class*=cell-bg-]:hover, [class*=cell-bg-]:focus {
     background-color: var(--bs-gray-500);
@@ -143,7 +124,7 @@ body {
 
 .cell-link-text-decoration a {
     text-decoration: none;
-=======
+}
 .t3-cell-element-danger {
     color: #f00;
 }
@@ -158,7 +139,6 @@ body {
 }
 .t3-cell-element-unit-percent::after {
     content: "%";
->>>>>>> c0a03b64ed15b467c71cc7cc272c6ce04cf89813
 }
 .page-footer {
     position: absolute;

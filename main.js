@@ -23,16 +23,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (jsonData.languages) {
             for (const [key, value] of Object.entries(jsonData.languages)) {
                 columnDefsLanguages.push({
-<<<<<<< HEAD
-                    cellClassRules: {
-                        'cell-link-text-decoration': 'x >= 0',
-                        'cell-bg-green': 'x >= 80',
-                        'cell-bg-yellow': 'x >= 50 && x < 80',
-                        //'cell-bg-orange': 'x >= 20 && x < 50',
-                        'cell-bg-red': 'x < 50',
-                    },
-=======
->>>>>>> c0a03b64ed15b467c71cc7cc272c6ce04cf89813
                     cellRenderer: renderCellCrowdinProjectLanguage,
                     filter: false,
                     headerClass: 'ag-header-cell-custom-languagestyle',
