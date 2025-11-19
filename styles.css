@@ -57,6 +57,7 @@ body {
 
 .ag-header-viewport .ag-header-cell-label {
     transform: rotate(180deg);
+    justify-content: center;
 }
 
 .ag-header-cell-label, .ag-header-group-cell-label {
