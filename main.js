@@ -1,7 +1,11 @@
 /*!
  * Data grid for status page at https://localize.typo3.org/
- * AG Grid community v34.3.1
  */
+/*!
+ * AG Grid community v34.3.1 by AG Grid Ltd. - https://www.ag-grid.com
+ * License - https://www.ag-grid.com/eula/AG-Grid-Community-License.html (MIT License)
+ */
+
 // Config - source
 const sourceCrowdin = 'https://crowdin.com/project/';
 const sourceTYPO3ExtensionRepository = 'https://extensions.typo3.org/extension/';
@@ -19,6 +23,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (jsonData.languages) {
             for (const [key, value] of Object.entries(jsonData.languages)) {
                 columnDefsLanguages.push({
+<<<<<<< HEAD
                     cellClassRules: {
                         'cell-link-text-decoration': 'x >= 0',
                         'cell-bg-green': 'x >= 80',
@@ -26,14 +31,16 @@ document.addEventListener('DOMContentLoaded', async () => {
                         //'cell-bg-orange': 'x >= 20 && x < 50',
                         'cell-bg-red': 'x < 50',
                     },
+=======
+>>>>>>> c0a03b64ed15b467c71cc7cc272c6ce04cf89813
                     cellRenderer: renderCellCrowdinProjectLanguage,
                     filter: false,
                     headerClass: 'ag-header-cell-custom-languagestyle',
                     headerName: value,
                     headerTooltip: key,
                     sortable: true,
-                    valueGetter: `data.languages['${key}']`,
-                    languageKey: key,
+                    valueGetter: `data.translations['${key}']`,
+                    t3LanguageKey: key,
                 });
             }
         }
@@ -48,14 +55,23 @@ document.addEventListener('DOMContentLoaded', async () => {
                 sortable: true,
                 width: 260,
             },
+            {
+                headerName: '',
+                cellRenderer: renderCellExtensionState,
+                field: 'usable',
+                pinned: 'left',
+                sortable: true,
+                tooltipValueGetter: renderTooltipExtensionState,
+                width: 20,
+            },
             ...columnDefsLanguages
         ];
 
         const defaultColDef = {
             filter: false,
             flex: 1,
-            initialWidth: 50,
-            minWidth: 50,
+            initialWidth: 100,
+            minWidth: 100,
             sortable: false,
         };
 
@@ -64,6 +80,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             defaultColDef: defaultColDef,
             headerHeight: 110,
             theme: agGrid.themeMaterial,
+            tooltipShowDelay: 500,
+            tooltipHideDelay: 5000,
         };
 
         const gridDiv = document.querySelector('#ag-grid');
@@ -92,30 +110,64 @@ async function fetchJsonData(sourceJson) {
 
 // Render extension with link to crowdin project & source (currently TER only)
 function renderCellExtension(params) {
-    let link_crowdin;
-    // Crowdin may be not "usable"
-    if (params.data.usable) {
-        link_crowdin = `<a href="${sourceCrowdin}${params.data.crowdinKey}" target="_blank" title="Crowdin">${params.data.extensionKey}</a>`;
-    } else {
-        link_crowdin = `<a href="${sourceCrowdin}${params.data.crowdinKey}" target="_blank" title="Crowdin"><del>${params.data.extensionKey}</del></a>`;
-    }
-
+    const link_crowdin = `<a href="${sourceCrowdin}${params.data.crowdinKey}" target="_blank" title="Crowdin">${params.data.extensionKey}</a>`;
+    // Source link only for TER extensions
     let link_src;
-    // TER only for extensions
     if ( params.data.extensionKey != 'typo3-cms') {
         link_src = `<a href="${sourceTYPO3ExtensionRepository}${params.data.extensionKey}" target="_blank" title="TYPO3 extension repository">ter</a>`;
-    } else {
-        link_src = null;
     }
-
     return `${(link_crowdin) + (link_src ? ' | ' + link_src : '')}`;
+}
+
+/**
+ * Render admonition for extension state with information about
+ * - usable or not (No approvals available)
+ * - ...
+ */
+function renderCellExtensionState(params) {
+    if (params.value) {
+        return '';
+    } else {
+        return '<span class="t3-admonition t3-admonition-warning" role="alert"></span>';
+    }
+}
+/**
+ * Render tooltip for extension state with information about
+ * - usable or not (No approvals available)
+ * - ...
+ */
+function renderTooltipExtensionState(params) {
+    if (params.value) {
+        return '';
+    } else {
+        return 'No approvals available';
+    }
 }
 
 // Render crowdin project language link
 function renderCellCrowdinProjectLanguage(params) {
+    const dataApprovals = params.data.approvals[params.colDef.t3LanguageKey];
+    const dataTranslations = params.data.translations[params.colDef.t3LanguageKey];
+    let resultStyleAdditionalClasses = 't3-cell-element';
+    if (params.data.usable && params.value >= 80) {
+        resultStyleAdditionalClasses += ' t3-cell-element-success';
+    }
+    if (params.data.usable && params.value >= 50 && params.value < 80) {
+        resultStyleAdditionalClasses += ' t3-cell-element-warning';
+    }
+    if (params.data.usable && params.value < 50) {
+        resultStyleAdditionalClasses += ' t3-cell-element-danger';
+    }
     if (params.data.usable && typeof params.value === "number") {
-        return `<a href="${sourceCrowdin}${params.data.crowdinKey}/${params.colDef.languageKey}" target="_blank"><span class="cell-element">${params.value}</span></a>`;
+        resultStyleAdditionalClasses += ' t3-cell-element-unit-percent';
+    }
+    if (params.data.usable && (dataApprovals != dataTranslations)) {
+        resultStyleAdditionalClasses += ' t3-cell-element-lang-approval-missing';
+    }
+    const resultInfo = `${dataApprovals} / ${dataTranslations}`
+    if (params.data.usable && typeof params.value === "number") {
+        return `<a href="${sourceCrowdin}${params.data.crowdinKey}/${params.colDef.t3LanguageKey}" target="_blank"><span class="${resultStyleAdditionalClasses}">${resultInfo}</span></a>`;
     } else {
-        return `<span class="cell-element">${params.value}</span>`;
+        return `<span class="${resultStyleAdditionalClasses}">-</span>`;
     }
 }
