@@ -9,33 +9,47 @@ body {
     margin: 0;
     --ag-font-size: 16px;
 }
+
+#ag-grid {
+    height: 78vh;
+    display: grid;
+}
+
 .ag-pinned-left-cols-container .ag-cell {
     text-align: left;
 }
+
 .ag-cell {
     text-align: center;
 }
+
 :where(.ag-ltr) .ag-cell:not(.ag-cell-inline-editing) {
-    padding-left: calc(var(--ag-cell-horizontal-padding) /2 - 1px + var(--ag-row-group-indent-size)*var(--ag-indentation-level));
-    padding-right: calc(var(--ag-cell-horizontal-padding) /2 - 1px);
+    padding-left: calc(var(--ag-cell-horizontal-padding) / 2 - 1px + var(--ag-row-group-indent-size) * var(--ag-indentation-level));
+    padding-right: calc(var(--ag-cell-horizontal-padding) / 2 - 1px);
 }
+
 .ag-header-cell, .ag-header-group-cell {
-    padding: 0 calc(var(--ag-cell-horizontal-padding) /2);
+    padding: 0 calc(var(--ag-cell-horizontal-padding) / 2);
 }
+
 .ag-header-cell-label {
     height: 100%;
 }
+
 .ag-header-viewport .ag-header-cell-label {
     transform: rotate(180deg);
 }
+
 .ag-header-cell-label, .ag-header-group-cell-label {
     align-items: baseline;
 }
+
 .ag-header-cell-label .ag-header-cell-text {
     margin-top: 40px;
 }
+
 .ag-header-cell-custom-languagestyle .ag-header-cell-label .ag-header-cell-text {
-    display:inline-block;
+    display: inline-block;
     height: 90px;
     margin-top: 10px;
     overflow: hidden;
@@ -49,6 +63,7 @@ body {
     display: flex;
     gap: var(--ag-spacing);
 }
+
 :where(.ag-ltr) .ag-sort-indicator-icon {
     padding-left: 0;
 }
@@ -56,6 +71,7 @@ body {
 .ag-theme-material {
     --ag-odd-row-background-color: #E04F00;
 }
+
 .ag-theme-material .ag-row-odd {
     background-color: var(--ag-odd-row-background-color);
 }
@@ -68,21 +84,32 @@ body {
     padding: 2px;
     font-size: calc(var(--ag-font-size) * 0.75);
 }
+
 .cell-bg-red {
     background-color: #cc222244;
 }
+
 .cell-bg-orange {
     background-color: #cc772244;
 }
+
 .cell-bg-yellow {
     background-color: #cccc2244;
 }
+
 .cell-bg-green {
     background-color: #33cc3344;
 }
+
 [class*=cell-bg-]:hover, [class*=cell-bg-]:focus {
-background-color: var(--bs-gray-500);
+    background-color: var(--bs-gray-500);
 }
+
 .cell-link-text-decoration a {
     text-decoration: none;
+}
+.page-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
 }
