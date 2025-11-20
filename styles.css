@@ -71,7 +71,7 @@ body {
 .ag-header-cell-custom-languagestyle .ag-header-cell-label .ag-header-cell-text {
     display: inline-block;
     height: 90px;
-    margin-top: 10px;
+    margin-top:  5px;
     overflow: hidden;
     transform: rotate(180deg);
     text-overflow: ellipsis;
