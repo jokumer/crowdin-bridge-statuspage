@@ -56,8 +56,8 @@ body {
 }
 
 .ag-header-viewport .ag-header-cell-label {
-    transform: rotate(180deg);
-    justify-content: center;
+    justify-content: flex-start;
+    padding-left: 1.75rem;
 }
 
 .ag-header-cell-label, .ag-header-group-cell-label {
@@ -73,6 +73,7 @@ body {
     height: 90px;
     margin-top: 10px;
     overflow: hidden;
+    transform: rotate(180deg);
     text-overflow: ellipsis;
     white-space: nowrap;
     writing-mode: vertical-lr;
