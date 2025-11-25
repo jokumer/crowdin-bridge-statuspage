@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     sortable: true,
                     sortingOrder: ['desc', 'asc', null],
                     unSortIcon: true,
-                    valueGetter: `data.translations['${key}']`,
+                    valueGetter: `(typeof data.translations['${key}'] === "number") ? data.translations['${key}'] : -1`,
                     t3LanguageKey: key,
                 });
             }
@@ -140,23 +140,23 @@ function renderCellCrowdinProjectLanguage(params) {
     const dataApprovals = params.data.approvals[params.colDef.t3LanguageKey];
     const dataTranslations = params.data.translations[params.colDef.t3LanguageKey];
     let resultStyleAdditionalClasses = 't3-cell-element';
-    if (params.data.usable && params.value >= 80) {
+    if (params.data.usable && dataTranslations >= 80) {
         resultStyleAdditionalClasses += ' t3-cell-element-success';
     }
-    if (params.data.usable && params.value >= 50 && params.value < 80) {
+    if (params.data.usable && dataTranslations >= 50 && dataTranslations < 80) {
         resultStyleAdditionalClasses += ' t3-cell-element-warning';
     }
-    if (params.data.usable && params.value < 50) {
+    if (params.data.usable && dataTranslations < 50) {
         resultStyleAdditionalClasses += ' t3-cell-element-danger';
     }
-    if (params.data.usable && typeof params.value === "number") {
+    if (params.data.usable && typeof dataTranslations === "number") {
         resultStyleAdditionalClasses += ' t3-cell-element-unit-percent';
     }
     if (params.data.usable && (dataApprovals != dataTranslations)) {
         resultStyleAdditionalClasses += ' t3-cell-element-lang-approval-missing';
     }
     const resultInfo = `${dataApprovals} / ${dataTranslations}`
-    if (params.data.usable && typeof params.value === "number") {
+    if (params.data.usable && typeof dataTranslations === "number") {
         return `<a href="${sourceCrowdin}${params.data.crowdinKey}/${params.colDef.t3LanguageKey}" target="_blank"><span class="${resultStyleAdditionalClasses}">${resultInfo}</span></a>`;
     } else {
         return `<span class="${resultStyleAdditionalClasses}">-</span>`;
