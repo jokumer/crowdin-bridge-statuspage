@@ -29,6 +29,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                     headerName: value,
                     headerTooltip: key,
                     sortable: true,
+                    sortingOrder: ['desc', 'asc', null],
+                    unSortIcon: true,
                     valueGetter: `data.translations['${key}']`,
                     t3LanguageKey: key,
                 });
@@ -69,7 +71,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             columnDefs: columnDefs,
             defaultColDef: defaultColDef,
             headerHeight: 110,
-            theme: agGrid.themeMaterial,
             tooltipShowDelay: 500,
             tooltipHideDelay: 5000,
         };
