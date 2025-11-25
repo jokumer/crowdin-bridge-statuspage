@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 columnDefsLanguages.push({
                     cellRenderer: renderCellCrowdinProjectLanguage,
                     filter: false,
-                    headerClass: 'ag-header-cell-custom-languagestyle',
+                    headerClass: 't3-header-cell-language',
                     headerName: value,
                     headerTooltip: key,
                     sortable: true,
