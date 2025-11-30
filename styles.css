@@ -109,7 +109,10 @@ body {
     font-family: "Font Awesome 6 Free";
     font-weight: 900;
 }
-.t3-admonition-warning:before {content: "\f071";}
+.t3-admonition-warning:before {
+    content: "\f071";
+    margin-left: 10px;
+}
 
 .t3-cell-element {
     font-size: calc(var(--ag-font-size) *0.75);
@@ -155,4 +158,16 @@ body {
     position: absolute;
     bottom: 0;
     width: 100%;
+}
+
+.ag-pinned-left-cols-container .ag-cell {
+    background-color: #99999944;
+}
+
+.accordion-button {
+    background-color: #99999944;
+    font-weight: bold;
+}
+.accordion-item {
+    background-color: #99999944;
 }

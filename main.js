@@ -24,12 +24,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             for (const [key, value] of Object.entries(jsonData.languages)) {
                 columnDefsLanguages.push({
                     cellRenderer: renderCellCrowdinProjectLanguage,
+                    colId: key,
                     filter: false,
                     headerClass: 't3-header-cell-language',
                     headerName: value,
                     headerTooltip: key,
                     sortable: true,
                     sortingOrder: ['desc', 'asc', null],
+                    tooltipValueGetter: renderTooltipProjectLanguageState,
                     unSortIcon: true,
                     valueGetter: `(typeof data.translations['${key}'] === "number") ? data.translations['${key}'] : -1`,
                     t3LanguageKey: key,
@@ -43,18 +45,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 cellRenderer: renderCellExtension,
                 field: 'extensionKey',
                 filter: true,
+                lockPinned: true,
                 pinned: 'left',
                 sortable: true,
                 width: 260,
-            },
-            {
-                headerName: '',
-                cellRenderer: renderCellExtensionState,
-                field: 'usable',
-                pinned: 'left',
-                sortable: true,
-                tooltipValueGetter: renderTooltipExtensionState,
-                width: 20,
             },
             ...columnDefsLanguages
         ];
@@ -62,8 +56,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         const defaultColDef = {
             filter: false,
             flex: 1,
-            initialWidth: 100,
-            minWidth: 100,
+            initialWidth: 90,
+            minWidth: 90,
             sortable: false,
         };
 
@@ -81,6 +75,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         gridApi = agGrid.createGrid(gridDiv, gridOptions);
         gridApi.setGridOption('rowData', jsonData.projects);
 
+        // Init custom events
+        initActions();
     } catch (error) {
         console.error('Error during grid setup:', error);
     }
@@ -99,7 +95,114 @@ async function fetchJsonData(sourceJson) {
     }
 }
 
-// Render extension with link to crowdin project & source (currently TER only)
+
+
+/**
+ * test some features with preferred languages (pin, hide, show)
+ */
+let buttonLanguageHide = document.getElementById('buttonLanguageHide');
+let buttonLanguagePin = document.getElementById('buttonLanguagePin');
+let preferredLanguages = navigator.languages;
+let hiddenStatesDefault = [
+    {colId: 'extensionKey', hide: false},
+    {colId: 'usable', hide: false}
+];
+let pinnedStatesDefault = [
+    {colId: 'extensionKey', pinned: 'left'},
+    {colId: 'usable', pinned: 'left'}
+];
+function initActions() {
+    // Hide
+    buttonLanguageHide.onclick = function() {
+        hideLanguage();
+    };
+    buttonLanguageHide.textContent = buttonLanguageHide.dataset.labelHide;
+    // Pin
+    buttonLanguagePin.onclick = function() {
+        pinLanguage();
+    };
+    buttonLanguagePin.textContent = buttonLanguagePin.dataset.labelPin;
+}
+function hideLanguage() {
+    const hiddenStates = hiddenStatesDefault;
+    if (preferredLanguages.length !== 0) {
+        for (let i = 0; i < preferredLanguages.length; i++) {
+            const colId = preferredLanguages[i];
+            hiddenStates.push({colId: colId.toString(), hide: false});
+        }
+    }
+    gridApi.applyColumnState({
+        defaultState: {hide: true},
+        state: hiddenStates,
+    });
+    buttonLanguageHide.onclick = function() {
+        hideLanguageReset();
+    };
+    buttonLanguageHide.textContent = buttonLanguageHide.dataset.labelUnhide;
+    buttonLanguageHide.classList.remove('btn-light');
+    buttonLanguageHide.classList.add('btn-dark');
+}
+function hideLanguageReset() {
+    const hiddenStates = hiddenStatesDefault;
+    if (preferredLanguages.length !== 0) {
+        for (let i = 0; i < preferredLanguages.length; i++) {
+            const colId = preferredLanguages[i];
+            hiddenStates.push({colId: colId.toString(), hide: false});
+        }
+    }
+    gridApi.applyColumnState({
+        defaultState: {hide: false},
+        state: hiddenStates,
+    });
+    buttonLanguageHide.onclick = function() {
+        hideLanguage();
+    };
+    buttonLanguageHide.textContent = buttonLanguageHide.dataset.labelHide;
+    buttonLanguageHide.classList.remove('btn-dark');
+    buttonLanguageHide.classList.add('btn-light');
+}
+function pinLanguage() {
+    const pinnedStates = pinnedStatesDefault;
+    if (preferredLanguages.length !== 0) {
+        for (let i = 0; i < preferredLanguages.length; i++) {
+            const colId = preferredLanguages[i];
+            pinnedStates.push({colId: colId.toString(), pinned: 'left'});
+        }
+    }
+    gridApi.applyColumnState({
+        defaultState: {pinned: null},
+        state: pinnedStates,
+    });
+    buttonLanguagePin.onclick = function() {
+        pinLanguageReset();
+    };
+    buttonLanguagePin.textContent = buttonLanguagePin.dataset.labelUnpin;
+    buttonLanguagePin.classList.remove('btn-light');
+    buttonLanguagePin.classList.add('btn-dark');
+}
+function pinLanguageReset() {
+    const pinnedStates = pinnedStatesDefault;
+    if (preferredLanguages.length !== 0) {
+        for (let i = 0; i < preferredLanguages.length; i++) {
+            const colId = preferredLanguages[i];
+            pinnedStates.push({colId: colId.toString(), pinned: null});
+        }
+    }
+    gridApi.applyColumnState({
+        defaultState: {pinned: null},
+        state: pinnedStates,
+    });
+    buttonLanguagePin.onclick = function() {
+        pinLanguage();
+    };
+    buttonLanguagePin.textContent = buttonLanguagePin.dataset.labelPin;
+    buttonLanguagePin.classList.remove('btn-dark');
+    buttonLanguagePin.classList.add('btn-light');
+}
+
+
+
+// Render cell - extension with link to crowdin project & source (currently TER only)
 function renderCellExtension(params) {
     const link_crowdin = `<a href="${sourceCrowdin}${params.data.crowdinKey}" target="_blank" title="Crowdin">${params.data.extensionKey}</a>`;
     // Source link only for TER extensions
@@ -107,35 +210,15 @@ function renderCellExtension(params) {
     if ( params.data.extensionKey != 'typo3-cms') {
         link_src = `<a href="${sourceTYPO3ExtensionRepository}${params.data.extensionKey}" target="_blank" title="TYPO3 extension repository">ter</a>`;
     }
-    return `${(link_crowdin) + (link_src ? ' | ' + link_src : '')}`;
+    // Render admonition for extension state with information about usable or not (No approvals available)
+    let unusable = '';
+    if (params.data.usable === false) {
+        unusable = '<span class="t3-admonition t3-admonition-warning" role="alert" title="No approvals available"></span>';
+    }
+    return ` ${(link_crowdin) + (link_src ? ' | ' + link_src : '') + unusable}`;
 }
 
-/**
- * Render admonition for extension state with information about
- * - usable or not (No approvals available)
- * - ...
- */
-function renderCellExtensionState(params) {
-    if (params.value) {
-        return '';
-    } else {
-        return '<span class="t3-admonition t3-admonition-warning" role="alert"></span>';
-    }
-}
-/**
- * Render tooltip for extension state with information about
- * - usable or not (No approvals available)
- * - ...
- */
-function renderTooltipExtensionState(params) {
-    if (params.value) {
-        return '';
-    } else {
-        return 'No approvals available';
-    }
-}
-
-// Render crowdin project language link
+// Render cell - crowdin project language link
 function renderCellCrowdinProjectLanguage(params) {
     const dataApprovals = params.data.approvals[params.colDef.t3LanguageKey];
     const dataTranslations = params.data.translations[params.colDef.t3LanguageKey];
@@ -152,7 +235,7 @@ function renderCellCrowdinProjectLanguage(params) {
     if (params.data.usable && typeof dataTranslations === "number") {
         resultStyleAdditionalClasses += ' t3-cell-element-unit-percent';
     }
-    if (params.data.usable && (dataApprovals != dataTranslations)) {
+    if (params.data.usable && (dataApprovals !== dataTranslations)) {
         resultStyleAdditionalClasses += ' t3-cell-element-lang-approval-missing';
     }
     const resultInfo = `${dataApprovals} / ${dataTranslations}`
@@ -160,5 +243,16 @@ function renderCellCrowdinProjectLanguage(params) {
         return `<a href="${sourceCrowdin}${params.data.crowdinKey}/${params.colDef.t3LanguageKey}" target="_blank"><span class="${resultStyleAdditionalClasses}">${resultInfo}</span></a>`;
     } else {
         return `<span class="${resultStyleAdditionalClasses}">-</span>`;
+    }
+}
+
+// Render tooltip - project language state
+function renderTooltipProjectLanguageState(params) {
+    const dataApprovals = params.data.approvals[params.colDef.t3LanguageKey];
+    const dataTranslations = params.data.translations[params.colDef.t3LanguageKey];
+    if (params.data.usable && (dataApprovals !== dataTranslations)) {
+        return `${dataTranslations - dataApprovals}% Approvals missing`;
+    } else {
+        return '';
     }
 }
