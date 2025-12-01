@@ -100,7 +100,12 @@ body {
     font-family: "Font Awesome 6 Free";
     font-weight: 900;
 }
-.t3-admonition-warning:before {content: "\f071";}
+.t3-admonition:before {
+    content: "\f071";
+}
+.t3-admonition-warning {
+    color: #f00;
+}
 
 .t3-cell-element {
     font-size: calc(var(--ag-font-size) *0.75);
