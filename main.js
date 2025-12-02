@@ -63,6 +63,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         };
 
         const gridOptions = {
+            alwaysShowHorizontalScroll: true,
             columnDefs: columnDefs,
             defaultColDef: defaultColDef,
             headerHeight: 110,
