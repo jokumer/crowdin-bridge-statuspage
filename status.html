@@ -43,6 +43,54 @@
     </div>
   </div>
 </header>
+<nav class="t3-aggrid-navigator">
+  <div class="accordion" id="accordion-parent-filter">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="accordion-item-heading-heading">
+        <button class="accordion-button"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#accordion-item-heading" aria-expanded="true" aria-controls="accordion-item-heading">
+          Filter
+        </button>
+      </h2>
+      <div id="accordion-item-heading" class="accordion-collapse collapse"
+           aria-labelledby="accordion-item-heading-heading" data-bs-parent="#accordion-parent-filter">
+        <div class="accordion-body">
+          <div>
+            <p>Preferred Languages:</p>
+            <button class="btn btn-filter btn-sm btn-light"
+                    id="buttonLanguageHide"
+                    data-label-hide="Show"
+                    data-label-unhide="Show all">&nbsp;</button>
+            <button class="btn btn-filter btn-sm btn-light"
+                    id="buttonLanguagePin"
+                    data-label-pin="Pin"
+                    data-label-unpin="Unpin">&nbsp;</button>
+          </div>
+          <div>&nbsp;</div>
+          <div>
+            <p>TYPO3 versions (@todo):</p>
+            <button class="btn btn-filter btn-sm btn-dark">...</button>
+            <button class="btn btn-filter btn-sm btn-dark">10</button>
+            <button class="btn btn-filter btn-sm btn-dark">11</button>
+            <button class="btn btn-filter btn-sm btn-dark">12</button>
+            <button class="btn btn-filter btn-sm btn-dark">13</button>
+            <button class="btn btn-filter btn-sm btn-dark">14</button>
+          </div>
+          <div>&nbsp;</div>
+          <div>
+            <p>Relations (@todo):</p>
+            <button class="btn btn-filter btn-sm btn-light">most wanted</button>
+            <button class="btn btn-filter btn-sm btn-light">most used</button>
+            <button class="btn btn-filter btn-sm btn-light">newest</button>
+            <button class="btn btn-filter btn-sm btn-light">last updates</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
 <span id="ag-grid"></span>
 <footer class="page-footer">
   <div class="frame frame-ruler-before frame-background-dark">
@@ -61,6 +109,9 @@
 </footer>
 <script src="https://cdn.typo3.com/typo3infrastructure/universe/dist/webcomponents-loader.js"></script>
 <script type="module" src="https://cdn.typo3.com/typo3infrastructure/universe/dist/typo3-universe.js" async></script>
+<script type="module" src="https://cdn.typo3.com/typo3documentation/theme/typo3-docs-theme/0.35.0/js/popper.min.js" async></script>
+<script type="module" src="https://cdn.typo3.com/typo3documentation/theme/typo3-docs-theme/0.35.0/js/bootstrap.min.js" async></script>
+<script type="module" src="https://cdn.typo3.com/typo3documentation/theme/typo3-docs-theme/0.35.0/js/theme.min.js" async></script>
 <link href="https://cdn.typo3.com/typo3documentation/theme/typo3-docs-theme/0.30.4/css/theme.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/ag-grid-community@34.3.1/dist/ag-grid-community.min.js?t=1762865519"></script>
 <script src="main.js"></script>
